@@ -30,4 +30,35 @@ fetch(urlProduit).then(function (reponse) {
   });
 });
 
+const elt = document.getElementById('addToCart');
+elt.addEventListener('click', function() {
+  var promptColorsValue = document.getElementsByTagName("option")[0].value
+  var color = document.getElementById("colors").value
+  if (color === promptColorsValue) {
+    alert("Couleur Invalide")
+    return;
+  }
+  var quantity = document.getElementById("quantity").value
+  if (quantity < 1 || quantity > 100){
+    alert("Quantité Invalide")
+    return;
+  }
+  elt.innerHTML = "Article ajouté au panier";
+
+  
+var orderQuantity = localStorage.getItem(JSON.stringify({id: id,color: color}))
+
+if (orderQuantity != null) {
+  quantity = orderQuantity
+  if (orderQuantity < 100) {
+    quantity++
+  }
+}
+
+localStorage.setItem(
+    JSON.stringify({id: id, color: color}),
+    quantity
+)
+});
+
 
