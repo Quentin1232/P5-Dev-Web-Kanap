@@ -1,5 +1,4 @@
 //récupérer l'URL de la page
-
 var urlcourante = document.location.href;
 //alert (' URL : \n' +urlcourante);
 
@@ -23,42 +22,54 @@ fetch(urlProduit).then(function (reponse) {
 
     let tableauDeCouleur = reponsejson.colors;
     let numberOfColors = tableauDeCouleur.length;
-    for (let i=0; i<numberOfColors;i++){
-        let color = tableauDeCouleur[i];
-        document.getElementById("colors").innerHTML += `<option value=${color}>${color}</option>`;       
-    };
+    for (let i = 0; i < numberOfColors; i++) {
+      let color = tableauDeCouleur[i];
+      document.getElementById(
+        "colors"
+      ).innerHTML += `<option value=${color}>${color}</option>`;
+    }
   });
 });
 
-const elt = document.getElementById('addToCart');
-elt.addEventListener('click', function() {
-  var promptColorsValue = document.getElementsByTagName("option")[0].value
-  var color = document.getElementById("colors").value
+const elt = document.getElementById("addToCart");
+elt.addEventListener("click", function () {
+  var promptColorsValue = document.getElementsByTagName("option")[0].value;
+  var color = document.getElementById("colors").value;
   if (color === promptColorsValue) {
-    alert("Couleur Invalide")
+    alert("Couleur Invalide");
     return;
   }
-  var quantity = document.getElementById("quantity").value
-  if (quantity < 1 || quantity > 100){
-    alert("Quantité Invalide")
+  var quantity = parseInt(document.getElementById("quantity").value);
+  if (quantity < 1 || quantity > 100) {
+    alert("Quantité Invalide");
     return;
   }
   elt.innerHTML = "Article ajouté au panier";
 
-  
-var orderQuantity = localStorage.getItem(JSON.stringify({id: id,color: color}))
+  const panier = JSON.parse(localStorage.getItem("panier")) ?? [];
+  /**
+   * panier = [
+   *  {id: "dfsfsf", color: "blue", quantity: 4},
+   *  {id: "dfsfsf", color: "blue", quantity: 4},
+   *  {id: "dfsfsf", color: "blue", quantity: 4}
+   * ]
+   * 
+   */
+  const indexCanape = panier.findIndex((element) => {
+    return element.id == id && element.color == color;
+  });
+  console.log("indexCanape", indexCanape);
 
-if (orderQuantity != null) {
-  quantity = orderQuantity
-  if (orderQuantity < 100) {
-    quantity++
+  if (panier[indexCanape]) {
+    quantity += parseInt(panier[indexCanape].quantity);
+    if (quantity > 100) {
+      alert("quantite > 100");
+      return;
+    }
+    panier.splice(indexCanape, 1, { id, color, quantity });
+  } else {
+    panier.push({ id, color, quantity });
   }
-}
 
-localStorage.setItem(
-    JSON.stringify({id: id, color: color}),
-    quantity
-)
+  localStorage.setItem("panier", JSON.stringify(panier));
 });
-
-
