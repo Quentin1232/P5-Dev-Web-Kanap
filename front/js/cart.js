@@ -1,5 +1,9 @@
-//Récupérer les données du local storage
-const panier = JSON.parse(localStorage.getItem("panier")) ?? [];
+function getPanier() {
+  return JSON.parse(localStorage.getItem("panier")) ?? [];
+}
+function setPanier(panier) {
+  localStorage.setItem("panier", JSON.stringify(panier));
+}
 /**
  * panier = [
  *  {id: "dfsfsf", color: "blue", quantity: 4},
@@ -7,6 +11,7 @@ const panier = JSON.parse(localStorage.getItem("panier")) ?? [];
  *  {id: "dfsfsf", color: "blue", quantity: 4}
  * ]
  */
+let panier = getPanier();
 let totalQuantity = 0;
 let totalPrice = 0;
 panier.forEach((canape) => {
@@ -47,6 +52,19 @@ panier.forEach((canape) => {
       totalPrice += canape.quantity * produit.price;
       document.getElementById("totalQuantity").innerHTML = totalQuantity;
       document.getElementById("totalPrice").innerHTML = totalPrice;
+
+      var inputQte = cartItems.getElementsByClassName("itemQuantity");
+      console.log("inputQte", inputQte)
+      inputQte[inputQte.length -1].addEventListener("change", function (elementInput) {
+        var newQuantity = elementInput.value
+        console.log("newQuantity", newQuantity)
+        modifQte(canape.id, canape.color, newQuantity);
+      });
+
+      /* var boutonSupprimer = document.getElementsByClassName("deleteItem");
+      boutonSupprimer.addEventListener("click", function (){
+        suppItem(canape.id, canape.color);
+      }) */
     });
   });
 });
@@ -55,25 +73,33 @@ panier.forEach((canape) => {
 // Une fonction pour gerer la modification de la qte sur un element du panier
 // id & color & nouvelleQte
 function modifQte(id, color, nouvelleQte) {
+  panier = getPanier();
   // Trouver l'index du canapé à modifier
-  const indexCanape = panier.findIndex((element) => {
-    return element.id == id && element.color == color;
-  });
+  const indexCanape = panier.findIndex(element => element.id == id && element.color == color
+  );
+  console.log(indexCanape)
   // Utiliser la fonction "splice"(cf product.js) pour remplacer l'ancienne quantité par la nouvelle
   panier.splice(indexCanape, 1, { id, color, quantity: nouvelleQte });
+  setPanier(panier);
   // Il faut ensuite actualiser la page
   window.location.reload();
 }
 
-// On recupere tout les champs input ayant pour class "itemQuantity"
-const toutLesInputs = document.getElementsByClassName("itemQuantity");
-// On boucle sur elles
-toutLesInputs.forEach((inputQte) => {
 
-  inputQte.addEventListener("change", function(elementInput) {
-    modifQte(id, color, elementInput.value)
-  })
-});
 
-// On récupère les données du champs de texte de l'élément input qui est modifié
-// getElementBy
+
+
+
+// // Supprimer un item
+// function suppItem(id, color) {
+//   var panier = getPanier()
+//   const indexCanape = panier.findIndex(element => {
+//     console.log(element)
+//     return element.id == id && element.color == color;
+//   });
+//   panier.splice(indexCanape, 1);
+//   setPanier(panier);
+//   window.location.reload();
+// }
+
+// document.getElementsByClassName("deleteItem") = boutonSupprimer;
