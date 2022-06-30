@@ -25,8 +25,11 @@ panier.forEach((canape) => {
   fetch(urlProduit).then(function (reponse) {
     reponse.json().then(function (produit) {
       // Ajouter le html de chaque canape dans ce conteneur
-      cartItems.innerHTML += `
-        <article class="cart__item" data-id="${canape.id}" data-color="${canape.color}">
+      const nouvelElementHTML = document.createElement("article");
+      nouvelElementHTML.setAttribute("class", "cart__item");
+      nouvelElementHTML.setAttribute("data-id", canape.id);
+      nouvelElementHTML.setAttribute("data-color", canape.color);
+      nouvelElementHTML.innerHTML = `
           <div class="cart__item__img">
             <img src="${produit.imageUrl}" alt="${produit.altTxt}">
           </div>
@@ -46,20 +49,20 @@ panier.forEach((canape) => {
               </div>
             </div>
           </div>
-        </article>
       `;
+
+      var inputQte = nouvelElementHTML.getElementsByClassName("itemQuantity");
+      inputQte[0].addEventListener("change", function (event) {
+        var newQuantity = parseInt(event.target.value);
+        console.log("newQuantity", newQuantity);
+        modifQte(canape.id, canape.color, newQuantity);
+      });
+
+      cartItems.appendChild(nouvelElementHTML);
       totalQuantity += canape.quantity;
       totalPrice += canape.quantity * produit.price;
       document.getElementById("totalQuantity").innerHTML = totalQuantity;
       document.getElementById("totalPrice").innerHTML = totalPrice;
-
-      var inputQte = cartItems.getElementsByClassName("itemQuantity");
-      console.log("inputQte", inputQte)
-      inputQte[inputQte.length -1].addEventListener("change", function (elementInput) {
-        var newQuantity = elementInput.value
-        console.log("newQuantity", newQuantity)
-        modifQte(canape.id, canape.color, newQuantity);
-      });
 
       /* var boutonSupprimer = document.getElementsByClassName("deleteItem");
       boutonSupprimer.addEventListener("click", function (){
@@ -75,20 +78,16 @@ panier.forEach((canape) => {
 function modifQte(id, color, nouvelleQte) {
   panier = getPanier();
   // Trouver l'index du canapé à modifier
-  const indexCanape = panier.findIndex(element => element.id == id && element.color == color
+  const indexCanape = panier.findIndex(
+    (element) => element.id == id && element.color == color
   );
-  console.log(indexCanape)
+  console.log(indexCanape);
   // Utiliser la fonction "splice"(cf product.js) pour remplacer l'ancienne quantité par la nouvelle
   panier.splice(indexCanape, 1, { id, color, quantity: nouvelleQte });
   setPanier(panier);
   // Il faut ensuite actualiser la page
   window.location.reload();
 }
-
-
-
-
-
 
 // // Supprimer un item
 // function suppItem(id, color) {
