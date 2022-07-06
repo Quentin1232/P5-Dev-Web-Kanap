@@ -64,10 +64,10 @@ panier.forEach((canape) => {
       document.getElementById("totalQuantity").innerHTML = totalQuantity;
       document.getElementById("totalPrice").innerHTML = totalPrice;
 
-      /* var boutonSupprimer = document.getElementsByClassName("deleteItem");
-      boutonSupprimer.addEventListener("click", function (){
+      var boutonSupprimer = nouvelElementHTML.getElementsByClassName("deleteItem");
+      boutonSupprimer[0].addEventListener("click", function (event){
         suppItem(canape.id, canape.color);
-      }) */
+      })
     });
   });
 });
@@ -81,7 +81,6 @@ function modifQte(id, color, nouvelleQte) {
   const indexCanape = panier.findIndex(
     (element) => element.id == id && element.color == color
   );
-  console.log(indexCanape);
   // Utiliser la fonction "splice"(cf product.js) pour remplacer l'ancienne quantité par la nouvelle
   panier.splice(indexCanape, 1, { id, color, quantity: nouvelleQte });
   setPanier(panier);
@@ -90,15 +89,14 @@ function modifQte(id, color, nouvelleQte) {
 }
 
 // // Supprimer un item
-// function suppItem(id, color) {
-//   var panier = getPanier()
-//   const indexCanape = panier.findIndex(element => {
-//     console.log(element)
-//     return element.id == id && element.color == color;
-//   });
-//   panier.splice(indexCanape, 1);
-//   setPanier(panier);
-//   window.location.reload();
-// }
+function suppItem(id, color) {
+  panier = getPanier()
+  const indexCanape = panier.findIndex(
+    (element) => element.id == id && element.color == color
+  );
+  panier.splice(indexCanape, 1);
+  setPanier(panier);
+  window.location.reload();
+}
 
 // document.getElementsByClassName("deleteItem") = boutonSupprimer;
