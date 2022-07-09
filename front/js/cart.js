@@ -15,10 +15,6 @@ let panier = getPanier();
 let totalQuantity = 0;
 let totalPrice = 0;
 panier.forEach((canape) => {
-  /**
-   * canape = {id: "dfsfsf", color: "blue", quantity: 4},
-   */
-  // Recuper le conteneur des canapes
   const cartItems = document.getElementById("cart__items");
   const urlProduit = `http://localhost:3000/api/products/${canape.id}`;
 
@@ -64,17 +60,16 @@ panier.forEach((canape) => {
       document.getElementById("totalQuantity").innerHTML = totalQuantity;
       document.getElementById("totalPrice").innerHTML = totalPrice;
 
-      var boutonSupprimer = nouvelElementHTML.getElementsByClassName("deleteItem");
-      boutonSupprimer[0].addEventListener("click", function (event){
+      var boutonSupprimer =
+        nouvelElementHTML.getElementsByClassName("deleteItem");
+      boutonSupprimer[0].addEventListener("click", function (event) {
         suppItem(canape.id, canape.color);
-      })
+      });
     });
   });
 });
 
-// Une modif sur l'interface doit se repercuter sur le localstorage. Comment le fait-on??
-// Une fonction pour gerer la modification de la qte sur un element du panier
-// id & color & nouvelleQte
+// Modifier un item
 function modifQte(id, color, nouvelleQte) {
   panier = getPanier();
   // Trouver l'index du canapé à modifier
@@ -88,9 +83,9 @@ function modifQte(id, color, nouvelleQte) {
   window.location.reload();
 }
 
-// // Supprimer un item
+// Supprimer un item
 function suppItem(id, color) {
-  panier = getPanier()
+  panier = getPanier();
   const indexCanape = panier.findIndex(
     (element) => element.id == id && element.color == color
   );
@@ -99,4 +94,112 @@ function suppItem(id, color) {
   window.location.reload();
 }
 
-// document.getElementsByClassName("deleteItem") = boutonSupprimer;
+// Récupérer les infos de l'utilisateur
+
+/* const utilisateur = JSON.parse(localStorage.getItem("utilisateur")) ?? [];
+
+const newUser = utilisateur.findIndex((element) => {
+  return element.id == id && element.color == color;
+});
+console.log("username", username);
+
+utilisateur.push({ firstName, lastName, address, city, email });
+localStorage.setItem("utilisateur", JSON.stringify(utilisateur)); */
+
+document
+  .getElementById("firstName")
+  .addEventListener("change", function (event) {
+    const firstName = event.target.value;
+    const regexFirstName = new RegExp(/^[a-z\d]{2,12}$/i);
+    const test = regexFirstName.test(firstName);
+    //alert(test)
+    if (test == false) {
+      document.getElementById(
+        "firstNameErrorMsg"
+      ).innerHTML = `Le prénom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 12.`;
+      return;
+    } else {
+      document.getElementById("firstNameErrorMsg").innerHTML = "";
+    }
+  });
+
+document
+  .getElementById("lastName")
+  .addEventListener("change", function (event) {
+    const lastName = event.target.value;
+    const regexLastName = new RegExp(/^[a-z\d]{2,20}$/i);
+    const test = regexLastName.test(lastName);
+    //alert(test)
+    if (test == false) {
+      document.getElementById(
+        "lastNameErrorMsg"
+      ).innerHTML = `Le nom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`;
+      return;
+    } else {
+      document.getElementById("lastNameErrorMsg").innerHTML = "";
+    }
+  });
+
+document.getElementById("address").addEventListener("change", function (event) {
+  const address = event.target.value;
+  const regexAddress = new RegExp(/^[a-z\d]{2,20}$/i);
+  const test = regexAddress.test(address);
+  //alert(test)
+  if (test == false) {
+    document.getElementById(
+      "addressErrorMsg"
+    ).innerHTML = `L'adresse rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`;
+    return;
+  } else {
+    document.getElementById("addressErrorMsg").innerHTML = "";
+  }
+});
+
+document.getElementById("city").addEventListener("change", function (event) {
+  const city = event.target.value;
+  const regexCity = new RegExp(/^[a-z\d]{2,20}$/i);
+  const test = regexCity.test(city);
+  //alert(test)
+  if (test == false) {
+    document.getElementById(
+      "cityErrorMsg"
+    ).innerHTML = `Le nom de ville rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`;
+    return;
+  } else {
+    document.getElementById("cityErrorMsg").innerHTML = "";
+  }
+});
+
+document.getElementById("email").addEventListener("change", function (event) {
+  const email = event.target.value;
+  const regexEmail = new RegExp(
+    /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/
+  );
+  const test = regexEmail.test(email);
+  //alert(test)
+  if (test == false) {
+    document.getElementById(
+      "emailErrorMsg"
+    ).innerHTML = `Le format de l'adresse mail est incorect.`;
+    return;
+  } else {
+    document.getElementById("emailErrorMsg").innerHTML = "";
+  }
+});
+
+// Bouton "Commander !"
+document.getElementById("order").addEventListener("click", function (event) {
+  if (
+    document.getElementById("firstNameErrorMsg").value == "" &&
+    document.getElementById("lastNameErrorMsg").value == "" &&
+    document.getElementById("addressErrorMsg"). value == "" &&
+    document.getElementById("cityErrorMsg").value == "" &&
+    document.getElementById("emailErrorMsg").value == ""
+  ) {
+    //valider la commande
+  } else {
+    alert("L'un des champs du formulaire n'a pas été complété correctement.");
+    event.preventDefault;
+    return;
+  }
+});
