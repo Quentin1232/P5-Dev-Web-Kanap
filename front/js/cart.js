@@ -4,13 +4,13 @@ function getPanier() {
 function setPanier(panier) {
   localStorage.setItem("panier", JSON.stringify(panier));
 }
-/**
- * panier = [
- *  {id: "dfsfsf", color: "blue", quantity: 4},
- *  {id: "dfsfsf", color: "blue", quantity: 4},
- *  {id: "dfsfsf", color: "blue", quantity: 4}
- * ]
- */
+/*
+panier = [
+  {id: "dfsfsf", color: "blue", quantity: 4},
+  {id: "dfsfsf", color: "blue", quantity: 4},
+  {id: "dfsfsf", color: "blue", quantity: 4}
+] */
+
 let panier = getPanier();
 let totalQuantity = 0;
 let totalPrice = 0;
@@ -157,7 +157,7 @@ document.getElementById("address").addEventListener("change", function (event) {
 
 document.getElementById("city").addEventListener("change", function (event) {
   const city = event.target.value;
-  const regexCity = new RegExp(/^[a-z\d]{2,20}$/i);
+  const regexCity = new RegExp(/^[a-z\d ]{2,20}$/i);
   const test = regexCity.test(city);
   //alert(test)
   if (test == false) {
@@ -189,17 +189,27 @@ document.getElementById("email").addEventListener("change", function (event) {
 
 // Bouton "Commander !"
 document.getElementById("order").addEventListener("click", function (event) {
+  event.preventDefault();
   if (
-    document.getElementById("firstNameErrorMsg").value == "" &&
-    document.getElementById("lastNameErrorMsg").value == "" &&
-    document.getElementById("addressErrorMsg"). value == "" &&
-    document.getElementById("cityErrorMsg").value == "" &&
-    document.getElementById("emailErrorMsg").value == ""
+    !document.getElementById("firstNameErrorMsg").value &&
+    !document.getElementById("lastNameErrorMsg").value &&
+    !document.getElementById("addressErrorMsg").value &&
+    !document.getElementById("cityErrorMsg").value &&
+    !document.getElementById("emailErrorMsg").value
   ) {
-    //valider la commande
+    if (panier.length == 0) {
+      alert("Attention, aucun article commandé.");
+      return;
+    }
+
+    /* Tu dois recuperer les donnees du formulaire de contact
+     * contact = {firstName: "Quentin", lastName: "", city: ""}
+     * products = ["idcanape1", "idcanap2"]
+     * {contact: {firstName: "Quentin", lastName: "", city: ""}, products: ["idcanape1", "idcanap2"]} */
+
+    window.location.href = "confirmation.html";
   } else {
     alert("L'un des champs du formulaire n'a pas été complété correctement.");
-    event.preventDefault;
     return;
   }
 });
