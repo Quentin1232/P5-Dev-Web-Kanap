@@ -9,7 +9,15 @@ panier = [
   {id: "dfsfsf", color: "blue", quantity: 4},
   {id: "dfsfsf", color: "blue", quantity: 4},
   {id: "dfsfsf", color: "blue", quantity: 4}
-] */
+] 
+
+products = [ 
+  "dfsfsf",
+  "dfsfsf",
+  "dfsfsf",
+]
+
+*/
 
 let panier = getPanier();
 let totalQuantity = 0;
@@ -142,13 +150,13 @@ document
 
 document.getElementById("address").addEventListener("change", function (event) {
   const address = event.target.value;
-  const regexAddress = new RegExp(/^[a-z\d]{2,20}$/i);
+  const regexAddress = new RegExp(/^[a-z\d ]{5,30}$/i);
   const test = regexAddress.test(address);
   //alert(test)
   if (test == false) {
     document.getElementById(
       "addressErrorMsg"
-    ).innerHTML = `L'adresse rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`;
+    ).innerHTML = `L'adresse rentré est incorect. Il doit avoir plus de 5 caractères mais moins de 30.`;
     return;
   } else {
     document.getElementById("addressErrorMsg").innerHTML = "";
@@ -204,8 +212,44 @@ document.getElementById("order").addEventListener("click", function (event) {
 
     /* Tu dois recuperer les donnees du formulaire de contact
      * contact = {firstName: "Quentin", lastName: "", city: ""}
+
+        Ensuite compiler les produits qui se trouvent dans le panier afin de ne laisser que leurs ids comme suit;
      * products = ["idcanape1", "idcanap2"]
-     * {contact: {firstName: "Quentin", lastName: "", city: ""}, products: ["idcanape1", "idcanap2"]} */
+
+        Ensuite regrouper les données du contact et des produits dans un seul objet comme suit;
+     * { contact: {firstName: "Quentin", lastName: "", city: ""}, products: ["idcanape1", "idcanap2"]}
+
+        Ensuite faire une requete vers la route de commande de l'api avec l'objet defini plus haut;
+     */
+
+    const contact = {
+      firstName: document.getElementById("firstName").value,
+      lastName: document.getElementById("lastName").value,
+      city: document.getElementById("city").value,
+      address: document.getElementById("address").value,
+      email: document.getElementById("email").value,
+    };
+    alert (contact);
+    let idDesCanapes = [];
+
+    for (let indexCanape = 0; indexCanape < panier.length; indexCanape++) {
+      idDesCanapes.push(panier[indexCanape].id);
+    }
+
+    let elementsPourApi = { contact, products: idDesCanapes };
+
+    // Faire la requete vers l'api avec les données ci-dessus
+    const url = "http://localhost:3000/api/order"
+    fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept' : 'application/json',
+        'Content-Type' : 'application/json'
+      },
+      body : JSON.stringify(elementsPourApi)
+    });
+
+    // Recuperer la reponse de la requete, et envoyer l'id de confirmation vers la page confirmation
 
     window.location.href = "confirmation.html";
   } else {
