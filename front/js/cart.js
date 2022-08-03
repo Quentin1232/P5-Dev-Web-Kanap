@@ -229,7 +229,7 @@ document.getElementById("order").addEventListener("click", function (event) {
       address: document.getElementById("address").value,
       email: document.getElementById("email").value,
     };
-    alert (contact);
+    console.log(contact);
     let idDesCanapes = [];
 
     for (let indexCanape = 0; indexCanape < panier.length; indexCanape++) {
@@ -239,19 +239,26 @@ document.getElementById("order").addEventListener("click", function (event) {
     let elementsPourApi = { contact, products: idDesCanapes };
 
     // Faire la requete vers l'api avec les données ci-dessus
-    const url = "http://localhost:3000/api/order"
+    const url = "http://localhost:3000/api/products/order";
     fetch(url, {
       method: "POST",
       headers: {
-        'Accept' : 'application/json',
-        'Content-Type' : 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body : JSON.stringify(elementsPourApi)
+      body: JSON.stringify(elementsPourApi),
+    }).then(function (response) {
+      response.json().then(function (donneesAPI) {
+        console.log(donneesAPI);
+        let orderId = donneesAPI.orderId;
+
+        // Recuperer la reponse de la requete, et envoyer l'id de confirmation vers la page confirmation via l'URL
+
+        window.location.href = `confirmation.html?orderId=${orderId}`;
+      });
     });
 
-    // Recuperer la reponse de la requete, et envoyer l'id de confirmation vers la page confirmation
 
-    window.location.href = "confirmation.html";
   } else {
     alert("L'un des champs du formulaire n'a pas été complété correctement.");
     return;
