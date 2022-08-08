@@ -258,7 +258,6 @@ document.getElementById("order").addEventListener("click", function (event) {
       });
     });
 
-
   } else {
     alert("L'un des champs du formulaire n'a pas été complété correctement.");
     return;
