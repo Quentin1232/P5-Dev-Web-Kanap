@@ -252,8 +252,10 @@ document.getElementById("order").addEventListener("click", function (event) {
         console.log(donneesAPI);
         let orderId = donneesAPI.orderId;
 
-        // Recuperer la reponse de la requete, et envoyer l'id de confirmation vers la page confirmation via l'URL
+        //Supprimer le contenu du stockage local
+        localStorage.removeItem("panier");
 
+        // Recuperer la reponse de la requete, et envoyer l'id de confirmation vers la page confirmation via l'URL
         window.location.href = `confirmation.html?orderId=${orderId}`;
       });
     });

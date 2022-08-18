@@ -2,7 +2,9 @@ const urlProduits = "http://localhost:3000/api/products";
 
 let produits;
 
-fetch(urlProduits).then(function (reponse) {
+fetch(urlProduits).catch(function(){
+  alert("Site Web indisponible. Essayez d'actualiser la page ou revenez plus tard.");
+}).then(function (reponse) {
   reponse.json().then((donnees) => {
     produits = donnees;
     console.log("produits", produits);
@@ -20,4 +22,5 @@ fetch(urlProduits).then(function (reponse) {
     }
     // Pour chaque produit qu'on va parcourir, injecter de facon dynamique le petit bout de code commenté
   });
+
 });
