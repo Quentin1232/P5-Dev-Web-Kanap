@@ -203,7 +203,12 @@ document.getElementById("order").addEventListener("click", function (event) {
     !document.getElementById("lastNameErrorMsg").value &&
     !document.getElementById("addressErrorMsg").value &&
     !document.getElementById("cityErrorMsg").value &&
-    !document.getElementById("emailErrorMsg").value
+    !document.getElementById("emailErrorMsg").value &&
+    document.getElementById("firstName").value &&
+    document.getElementById("lastName").value &&
+    document.getElementById("city").value &&
+    document.getElementById("address").value &&
+    document.getElementById("email").value
   ) {
     if (panier.length == 0) {
       alert("Attention, aucun article commandé.");
