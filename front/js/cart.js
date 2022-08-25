@@ -104,16 +104,6 @@ function suppItem(id, color) {
 
 // Récupérer les infos de l'utilisateur
 
-/* const utilisateur = JSON.parse(localStorage.getItem("utilisateur")) ?? [];
-
-const newUser = utilisateur.findIndex((element) => {
-  return element.id == id && element.color == color;
-});
-console.log("username", username);
-
-utilisateur.push({ firstName, lastName, address, city, email });
-localStorage.setItem("utilisateur", JSON.stringify(utilisateur)); */
-
 document
   .getElementById("firstName")
   .addEventListener("change", function (event) {
