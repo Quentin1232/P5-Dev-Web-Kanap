@@ -6,4 +6,4 @@ var url = new URL(urlcourante);
 var orderId = url.searchParams.get("orderId");
 
 //ajouter orderId au document
-document.getElementById("orderId").innerHTML = orderId;
+document.getElementById("orderId").insertAdjacentHTML('beforeend', orderId);

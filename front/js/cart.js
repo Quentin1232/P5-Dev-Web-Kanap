@@ -18,6 +18,9 @@ products = [
 ]
 
 */
+let testPanier = JSON.parse(localStorage.getItem("panier")) ;
+testPanier.sort((x, y) => x.id - y.id);
+console.log(testPanier);
 
 let panier = getPanier();
 let totalQuantity = 0;
@@ -33,7 +36,7 @@ panier.forEach((canape) => {
       nouvelElementHTML.setAttribute("class", "cart__item");
       nouvelElementHTML.setAttribute("data-id", canape.id);
       nouvelElementHTML.setAttribute("data-color", canape.color);
-      nouvelElementHTML.innerHTML = `
+      nouvelElementHTML.insertAdjacentHTML('beforeend', `
           <div class="cart__item__img">
             <img src="${produit.imageUrl}" alt="${produit.altTxt}">
           </div>
@@ -53,7 +56,7 @@ panier.forEach((canape) => {
               </div>
             </div>
           </div>
-      `;
+      `);
 
       var inputQte = nouvelElementHTML.getElementsByClassName("itemQuantity");
       inputQte[0].addEventListener("change", function (event) {
@@ -84,6 +87,11 @@ function modifQte(id, color, nouvelleQte) {
   const indexCanape = panier.findIndex(
     (element) => element.id == id && element.color == color
   );
+  if (nouvelleQte < 1 || nouvelleQte > 100) {
+    alert("Quantité Invalide");
+    window.location.reload();
+    return;
+  }
   // Utiliser la fonction "splice"(cf product.js) pour remplacer l'ancienne quantité par la nouvelle
   panier.splice(indexCanape, 1, { id, color, quantity: nouvelleQte });
   setPanier(panier);
@@ -112,12 +120,10 @@ document
     const test = regexFirstName.test(firstName);
     //alert(test)
     if (test == false) {
-      document.getElementById(
-        "firstNameErrorMsg"
-      ).innerHTML = `Le prénom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 12.`;
+      document.getElementById("firstNameErrorMsg").insertAdjacentHTML('beforeend', `Le prénom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 12.`);
       return;
     } else {
-      document.getElementById("firstNameErrorMsg").innerHTML = "";
+      document.getElementById("firstNameErrorMsg").insertAdjacentHTML('beforeend', "");
     }
   });
 
@@ -129,12 +135,10 @@ document
     const test = regexLastName.test(lastName);
     //alert(test)
     if (test == false) {
-      document.getElementById(
-        "lastNameErrorMsg"
-      ).innerHTML = `Le nom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`;
+      document.getElementById("lastNameErrorMsg").insertAdjacentHTML('beforeend', `Le nom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`);
       return;
     } else {
-      document.getElementById("lastNameErrorMsg").innerHTML = "";
+      document.getElementById("lastNameErrorMsg").insertAdjacentHTML('beforeend', "");
     }
   });
 
@@ -144,12 +148,10 @@ document.getElementById("address").addEventListener("change", function (event) {
   const test = regexAddress.test(address);
   //alert(test)
   if (test == false) {
-    document.getElementById(
-      "addressErrorMsg"
-    ).innerHTML = `L'adresse rentré est incorect. Il doit avoir plus de 5 caractères mais moins de 30.`;
+    document.getElementById("addressErrorMsg").insertAdjacentHTML('beforeend', `L'adresse rentré est incorect. Il doit avoir plus de 5 caractères mais moins de 30.`);
     return;
   } else {
-    document.getElementById("addressErrorMsg").innerHTML = "";
+    document.getElementById("addressErrorMsg").insertAdjacentHTML('beforeend', "");
   }
 });
 
@@ -159,12 +161,10 @@ document.getElementById("city").addEventListener("change", function (event) {
   const test = regexCity.test(city);
   //alert(test)
   if (test == false) {
-    document.getElementById(
-      "cityErrorMsg"
-    ).innerHTML = `Le nom de ville rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`;
+    document.getElementById("cityErrorMsg").insertAdjacentHTML('beforeend', `Le nom de ville rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`);
     return;
   } else {
-    document.getElementById("cityErrorMsg").innerHTML = "";
+    document.getElementById("cityErrorMsg").insertAdjacentHTML('beforeend', "");
   }
 });
 
@@ -176,12 +176,10 @@ document.getElementById("email").addEventListener("change", function (event) {
   const test = regexEmail.test(email);
   //alert(test)
   if (test == false) {
-    document.getElementById(
-      "emailErrorMsg"
-    ).innerHTML = `Le format de l'adresse mail est incorect.`;
+    document.getElementById("emailErrorMsg").insertAdjacentHTML('beforeend', `Le format de l'adresse mail est incorect.`);
     return;
   } else {
-    document.getElementById("emailErrorMsg").innerHTML = "";
+    document.getElementById("emailErrorMsg").insertAdjacentHTML('beforeend', "");
   }
 });
 

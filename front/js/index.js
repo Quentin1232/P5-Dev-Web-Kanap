@@ -11,14 +11,15 @@ fetch(urlProduits).catch(function(){
 
     // Parcourir le tableau des produits a l'aide d'une boucle
     for (const produit of produits) {
-      document.getElementById("items").innerHTML += `
+      var test = document.getElementById('items');
+      test.insertAdjacentHTML('beforeend', `
 			<a href="./product.html?id=${produit._id}">
 				<article>
 					<img src="${produit.imageUrl}" alt="${produit.altTxt}">
 					<h3 class="productName">${produit.name}</h3>
 					<p class="productDescription">${produit.description}</p>
 				</article>
-			</a>`;
+			</a>`);
     }
     // Pour chaque produit qu'on va parcourir, injecter de facon dynamique le petit bout de code commenté
   });

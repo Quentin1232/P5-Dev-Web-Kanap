@@ -15,18 +15,17 @@ fetch(urlProduit).then(function (reponse) {
   reponse.json().then(function (reponsejson) {
     // On associe le titre de l'article (sur l'API) avec le titre du produit (HTML). Pareil avec les autres infos
     console.log(reponsejson);
-    document.getElementsByClassName("item__img")[0].innerHTML += `<img src="${reponsejson.imageUrl}" alt="${reponsejson.altTxt}">`;
-    document.getElementById("title").innerHTML = reponsejson.name;
-    document.getElementById("price").innerHTML = reponsejson.price;
-    document.getElementById("description").innerHTML = reponsejson.description;
+    document.getElementsByClassName("item__img")[0].insertAdjacentHTML('beforeend', `<img src="${reponsejson.imageUrl}" alt="${reponsejson.altTxt}">`);
+    document.getElementById("title").insertAdjacentHTML('beforeend', reponsejson.name);
+    document.getElementById("price").insertAdjacentHTML('beforeend', reponsejson.price);
+    document.getElementById("description").insertAdjacentHTML('beforeend', reponsejson.description);
 
     let tableauDeCouleur = reponsejson.colors;
     let numberOfColors = tableauDeCouleur.length;
     for (let i = 0; i < numberOfColors; i++) {
       let color = tableauDeCouleur[i];
-      document.getElementById(
-        "colors"
-      ).innerHTML += `<option value=${color}>${color}</option>`;
+      var colors = document.getElementById('colors');
+      colors.insertAdjacentHTML('beforeend',  `<option value=${color}>${color}</option>`);
     }
   });
 });
