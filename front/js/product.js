@@ -1,12 +1,9 @@
-//récupérer l'URL de la page
+//récupérer l'URL de la page (' URL : \n' +urlcourante);
 var urlcourante = document.location.href;
-//alert (' URL : \n' +urlcourante);
 
 //récupérer l'Id de l'URL
-
 var url = new URL(urlcourante);
 var id = url.searchParams.get("id");
-//alert(id);
 
 const urlProduit = `http://localhost:3000/api/products/${id}`;
 
@@ -15,17 +12,31 @@ fetch(urlProduit).then(function (reponse) {
   reponse.json().then(function (reponsejson) {
     // On associe le titre de l'article (sur l'API) avec le titre du produit (HTML). Pareil avec les autres infos
     console.log(reponsejson);
-    document.getElementsByClassName("item__img")[0].insertAdjacentHTML('beforeend', `<img src="${reponsejson.imageUrl}" alt="${reponsejson.altTxt}">`);
-    document.getElementById("title").insertAdjacentHTML('beforeend', reponsejson.name);
-    document.getElementById("price").insertAdjacentHTML('beforeend', reponsejson.price);
-    document.getElementById("description").insertAdjacentHTML('beforeend', reponsejson.description);
+    document
+      .getElementsByClassName("item__img")[0]
+      .insertAdjacentHTML(
+        "beforeend",
+        `<img src="${reponsejson.imageUrl}" alt="${reponsejson.altTxt}">`
+      );
+    document
+      .getElementById("title")
+      .insertAdjacentHTML("beforeend", reponsejson.name);
+    document
+      .getElementById("price")
+      .insertAdjacentHTML("beforeend", reponsejson.price);
+    document
+      .getElementById("description")
+      .insertAdjacentHTML("beforeend", reponsejson.description);
 
     let tableauDeCouleur = reponsejson.colors;
     let numberOfColors = tableauDeCouleur.length;
     for (let i = 0; i < numberOfColors; i++) {
       let color = tableauDeCouleur[i];
-      var colors = document.getElementById('colors');
-      colors.insertAdjacentHTML('beforeend',  `<option value=${color}>${color}</option>`);
+      var colors = document.getElementById("colors");
+      colors.insertAdjacentHTML(
+        "beforeend",
+        `<option value=${color}>${color}</option>`
+      );
     }
   });
 });
@@ -52,12 +63,10 @@ elt.addEventListener("click", function () {
    *  {id: "dfsfsf", color: "blue", quantity: 4},
    *  {id: "dfsfsf", color: "blue", quantity: 4}
    * ]
-   * 
    */
   const indexCanape = panier.findIndex((element) => {
     return element.id == id && element.color == color;
   });
-  console.log("indexCanape", indexCanape);
 
   if (panier[indexCanape]) {
     quantity += parseInt(panier[indexCanape].quantity);

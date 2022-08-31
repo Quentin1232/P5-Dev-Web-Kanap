@@ -1,6 +1,20 @@
 function getPanier() {
-  return JSON.parse(localStorage.getItem("panier")) ?? [];
+  let panier = JSON.parse(localStorage.getItem("panier")) ?? [];
+
+  panier.sort(function (a, b) {
+    if (a.id == b.id) {
+      return 0;
+    }
+    if (a.id < b.id) {
+      return 1;
+    }
+    if (a.id > b.id) {
+      return -1;
+    }
+  });
+  return panier;
 }
+
 function setPanier(panier) {
   localStorage.setItem("panier", JSON.stringify(panier));
 }
@@ -10,33 +24,28 @@ panier = [
   {id: "dfsfsf", color: "blue", quantity: 4},
   {id: "dfsfsf", color: "blue", quantity: 4}
 ] 
-
-products = [ 
-  "dfsfsf",
-  "dfsfsf",
-  "dfsfsf",
-]
-
 */
-let testPanier = JSON.parse(localStorage.getItem("panier")) ;
-testPanier.sort((x, y) => x.id - y.id);
-console.log(testPanier);
 
 let panier = getPanier();
+console.log("panier", panier);
+
 let totalQuantity = 0;
 let totalPrice = 0;
 panier.forEach((canape) => {
   const cartItems = document.getElementById("cart__items");
   const urlProduit = `http://localhost:3000/api/products/${canape.id}`;
+  const nouvelElementHTML = document.createElement("article");
+  cartItems.appendChild(nouvelElementHTML);
 
   fetch(urlProduit).then(function (reponse) {
     reponse.json().then(function (produit) {
       // Ajouter le html de chaque canape dans ce conteneur
-      const nouvelElementHTML = document.createElement("article");
       nouvelElementHTML.setAttribute("class", "cart__item");
       nouvelElementHTML.setAttribute("data-id", canape.id);
       nouvelElementHTML.setAttribute("data-color", canape.color);
-      nouvelElementHTML.insertAdjacentHTML('beforeend', `
+      nouvelElementHTML.insertAdjacentHTML(
+        "beforeend",
+        `
           <div class="cart__item__img">
             <img src="${produit.imageUrl}" alt="${produit.altTxt}">
           </div>
@@ -56,16 +65,15 @@ panier.forEach((canape) => {
               </div>
             </div>
           </div>
-      `);
+      `
+      );
 
       var inputQte = nouvelElementHTML.getElementsByClassName("itemQuantity");
       inputQte[0].addEventListener("change", function (event) {
         var newQuantity = parseInt(event.target.value);
-        console.log("newQuantity", newQuantity);
         modifQte(canape.id, canape.color, newQuantity);
       });
 
-      cartItems.appendChild(nouvelElementHTML);
       totalQuantity += canape.quantity;
       totalPrice += canape.quantity * produit.price;
       document.getElementById("totalQuantity").innerHTML = totalQuantity;
@@ -95,7 +103,6 @@ function modifQte(id, color, nouvelleQte) {
   // Utiliser la fonction "splice"(cf product.js) pour remplacer l'ancienne quantité par la nouvelle
   panier.splice(indexCanape, 1, { id, color, quantity: nouvelleQte });
   setPanier(panier);
-  // Il faut ensuite actualiser la page
   window.location.reload();
 }
 
@@ -111,7 +118,6 @@ function suppItem(id, color) {
 }
 
 // Récupérer les infos de l'utilisateur
-
 document
   .getElementById("firstName")
   .addEventListener("change", function (event) {
@@ -120,10 +126,17 @@ document
     const test = regexFirstName.test(firstName);
     //alert(test)
     if (test == false) {
-      document.getElementById("firstNameErrorMsg").insertAdjacentHTML('beforeend', `Le prénom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 12.`);
+      document
+        .getElementById("firstNameErrorMsg")
+        .insertAdjacentHTML(
+          "beforeend",
+          `Le prénom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 12.`
+        );
       return;
     } else {
-      document.getElementById("firstNameErrorMsg").insertAdjacentHTML('beforeend', "");
+      document
+        .getElementById("firstNameErrorMsg")
+        .insertAdjacentHTML("beforeend", "");
     }
   });
 
@@ -133,12 +146,18 @@ document
     const lastName = event.target.value;
     const regexLastName = new RegExp(/^[a-z\d]{2,20}$/i);
     const test = regexLastName.test(lastName);
-    //alert(test)
     if (test == false) {
-      document.getElementById("lastNameErrorMsg").insertAdjacentHTML('beforeend', `Le nom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`);
+      document
+        .getElementById("lastNameErrorMsg")
+        .insertAdjacentHTML(
+          "beforeend",
+          `Le nom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`
+        );
       return;
     } else {
-      document.getElementById("lastNameErrorMsg").insertAdjacentHTML('beforeend', "");
+      document
+        .getElementById("lastNameErrorMsg")
+        .insertAdjacentHTML("beforeend", "");
     }
   });
 
@@ -146,12 +165,18 @@ document.getElementById("address").addEventListener("change", function (event) {
   const address = event.target.value;
   const regexAddress = new RegExp(/^[a-z\d ]{5,30}$/i);
   const test = regexAddress.test(address);
-  //alert(test)
   if (test == false) {
-    document.getElementById("addressErrorMsg").insertAdjacentHTML('beforeend', `L'adresse rentré est incorect. Il doit avoir plus de 5 caractères mais moins de 30.`);
+    document
+      .getElementById("addressErrorMsg")
+      .insertAdjacentHTML(
+        "beforeend",
+        `L'adresse rentré est incorect. Il doit avoir plus de 5 caractères mais moins de 30.`
+      );
     return;
   } else {
-    document.getElementById("addressErrorMsg").insertAdjacentHTML('beforeend', "");
+    document
+      .getElementById("addressErrorMsg")
+      .insertAdjacentHTML("beforeend", "");
   }
 });
 
@@ -159,12 +184,16 @@ document.getElementById("city").addEventListener("change", function (event) {
   const city = event.target.value;
   const regexCity = new RegExp(/^[a-z\d ]{2,20}$/i);
   const test = regexCity.test(city);
-  //alert(test)
   if (test == false) {
-    document.getElementById("cityErrorMsg").insertAdjacentHTML('beforeend', `Le nom de ville rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`);
+    document
+      .getElementById("cityErrorMsg")
+      .insertAdjacentHTML(
+        "beforeend",
+        `Le nom de ville rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`
+      );
     return;
   } else {
-    document.getElementById("cityErrorMsg").insertAdjacentHTML('beforeend', "");
+    document.getElementById("cityErrorMsg").insertAdjacentHTML("beforeend", "");
   }
 });
 
@@ -174,12 +203,18 @@ document.getElementById("email").addEventListener("change", function (event) {
     /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/
   );
   const test = regexEmail.test(email);
-  //alert(test)
   if (test == false) {
-    document.getElementById("emailErrorMsg").insertAdjacentHTML('beforeend', `Le format de l'adresse mail est incorect.`);
+    document
+      .getElementById("emailErrorMsg")
+      .insertAdjacentHTML(
+        "beforeend",
+        `Le format de l'adresse mail est incorect.`
+      );
     return;
   } else {
-    document.getElementById("emailErrorMsg").insertAdjacentHTML('beforeend', "");
+    document
+      .getElementById("emailErrorMsg")
+      .insertAdjacentHTML("beforeend", "");
   }
 });
 
@@ -222,7 +257,6 @@ document.getElementById("order").addEventListener("click", function (event) {
       address: document.getElementById("address").value,
       email: document.getElementById("email").value,
     };
-    console.log(contact);
     let idDesCanapes = [];
 
     for (let indexCanape = 0; indexCanape < panier.length; indexCanape++) {
@@ -242,7 +276,6 @@ document.getElementById("order").addEventListener("click", function (event) {
       body: JSON.stringify(elementsPourApi),
     }).then(function (response) {
       response.json().then(function (donneesAPI) {
-        console.log(donneesAPI);
         let orderId = donneesAPI.orderId;
 
         //Supprimer le contenu du stockage local
@@ -252,7 +285,6 @@ document.getElementById("order").addEventListener("click", function (event) {
         window.location.href = `confirmation.html?orderId=${orderId}`;
       });
     });
-
   } else {
     alert("L'un des champs du formulaire n'a pas été complété correctement.");
     return;
