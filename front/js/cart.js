@@ -126,17 +126,12 @@ document
     const test = regexFirstName.test(firstName);
     //alert(test)
     if (test == false) {
-      document
-        .getElementById("firstNameErrorMsg")
-        .insertAdjacentHTML(
-          "beforeend",
-          `Le prénom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 12.`
-        );
+      document.getElementById(
+        "firstNameErrorMsg"
+      ).innerHTML = `Le prénom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 12.`;
       return;
     } else {
-      document
-        .getElementById("firstNameErrorMsg")
-        .insertAdjacentHTML("beforeend", "");
+      document.getElementById("firstNameErrorMsg").innerHTML = "";
     }
   });
 
@@ -147,17 +142,12 @@ document
     const regexLastName = new RegExp(/^[a-z\d]{2,20}$/i);
     const test = regexLastName.test(lastName);
     if (test == false) {
-      document
-        .getElementById("lastNameErrorMsg")
-        .insertAdjacentHTML(
-          "beforeend",
-          `Le nom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`
-        );
+      document.getElementById(
+        "lastNameErrorMsg"
+      ).innerHTML = `Le nom rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`;
       return;
     } else {
-      document
-        .getElementById("lastNameErrorMsg")
-        .insertAdjacentHTML("beforeend", "");
+      document.getElementById("lastNameErrorMsg").innerHTML = "";
     }
   });
 
@@ -166,17 +156,12 @@ document.getElementById("address").addEventListener("change", function (event) {
   const regexAddress = new RegExp(/^[a-z\d ]{5,30}$/i);
   const test = regexAddress.test(address);
   if (test == false) {
-    document
-      .getElementById("addressErrorMsg")
-      .insertAdjacentHTML(
-        "beforeend",
-        `L'adresse rentré est incorect. Il doit avoir plus de 5 caractères mais moins de 30.`
-      );
+    document.getElementById(
+      "addressErrorMsg"
+    ).innerHTML = `L'adresse rentré est incorect. Il doit avoir plus de 5 caractères mais moins de 30.`;
     return;
   } else {
-    document
-      .getElementById("addressErrorMsg")
-      .insertAdjacentHTML("beforeend", "");
+    document.getElementById("addressErrorMsg").innerHTML = "";
   }
 });
 
@@ -185,15 +170,12 @@ document.getElementById("city").addEventListener("change", function (event) {
   const regexCity = new RegExp(/^[a-z\d ]{2,20}$/i);
   const test = regexCity.test(city);
   if (test == false) {
-    document
-      .getElementById("cityErrorMsg")
-      .insertAdjacentHTML(
-        "beforeend",
-        `Le nom de ville rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`
-      );
+    document.getElementById(
+      "cityErrorMsg"
+    ).innerHTML = `Le nom de ville rentré est incorect. Il doit avoir plus de 2 caractères mais moins de 20.`;
     return;
   } else {
-    document.getElementById("cityErrorMsg").insertAdjacentHTML("beforeend", "");
+    document.getElementById("cityErrorMsg").innerHTML = "";
   }
 });
 
@@ -204,17 +186,12 @@ document.getElementById("email").addEventListener("change", function (event) {
   );
   const test = regexEmail.test(email);
   if (test == false) {
-    document
-      .getElementById("emailErrorMsg")
-      .insertAdjacentHTML(
-        "beforeend",
-        `Le format de l'adresse mail est incorect.`
-      );
+    document.getElementById(
+      "emailErrorMsg"
+    ).innerHTML = `Le format de l'adresse mail est incorect.`;
     return;
   } else {
-    document
-      .getElementById("emailErrorMsg")
-      .insertAdjacentHTML("beforeend", "");
+    document.getElementById("emailErrorMsg").innerHTML = "";
   }
 });
 
